@@ -6,6 +6,7 @@ import (
 	//_ "github.com/go-sql-driver/mysql"
 	"github.com/widuu/gomysql"
 	//"log"
+	"encoding/json"
 )
 
 // func insert(db *sql.DB) {
@@ -22,13 +23,21 @@ import (
 // }
 
 func main() {
-	c, err := gomysql.SetConfig("/Users/Michael/dev/code/go/test/src/testMysql/conf/conf.ini")
+	c, err := gomysql.SetConfig("/Users/Michael/dev/code/github/studyGo/src/testMysql/conf/conf.ini")
 	if err != nil {
 		fmt.Println(err)
 	}
-	t := c.SetTable("user")                                    //设置要处理的表名
-	data := t.Fileds("id", "username").Where("id=2").FindOne() //查询表的一条数据，返回map[int]map[string]string格式
-	gomysql.Print(data)
+	t := c.SetTable("user") //设置要处理的表名
+	data := t.FindAll()     //查询表的一条数据，返回map[int]map[string]string格式
+
+	for i, v := range data {
+		xjson, err := json.Marshal(v)
+		if err != nil {
+			fmt.Print(err)
+		}
+		fmt.Printf("i=%v,v=%v\n", i, string(xjson))
+	}
+	//gomysql.Print(data)
 	/*
 		db, err := sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/uu?charset=utf8")
 		if err != nil {

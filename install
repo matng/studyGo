@@ -7,6 +7,8 @@ CURDIR=`pwd`
 OLDGOPATH="$GOPATH"
 export GOPATH="$CURDIR"
 gofmt -w src
-go install $1
+rm -rf ./bin/$1
+go install ./src/$1
+./bin/$1
 export GOPATH="$OLDGOPATH"
 echo 'finished'
